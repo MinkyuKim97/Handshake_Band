@@ -23,6 +23,7 @@ const int TXPin = 6;
 HardwareSerial Uart(2);
 
 String RXLine;
+String line;
 int lastTX = 0;
 int counter = 0;
 
@@ -70,6 +71,8 @@ void connectWiFi() {
 
           WiFi.begin(WIFI_SSIDS[j], WIFI_PASSWORDS[j]);
           started = true;
+          Serial.print("WIFI connected with: ");
+          Serial.println(WIFI_SSIDS[j]);
           return;
         }
       }
@@ -109,8 +112,9 @@ void TXTask(){
     return;
   }
   lastTX = now;
+  Uart.print('\r');
   Uart.print(msgLine);
-  Uart.print("REPLACE HERE WITH CLIENT ID");
+  Uart.print("0000");
   Uart.print('\n');
   // Serial.println("Sending MSG");
 }
@@ -122,16 +126,26 @@ void RXTask(){
       continue;
     }
 
-    if(c == '\n'){
+    if (c == '\n') {
+      RXLine.trim();
+      // Serial.println(RXLine);
+      
       if(RXLine.startsWith(msgLine)){
+        String cmd = RXLine.substring(4);
+        cmd.trim();
+        // Serial.println(cmd);
+
         lastMsgTime = millis();
         if(!msgActivate){
           msgActivate = true;
         }        
-        onMsgLine(RXLine);
+        onMsgLine(cmd);
       }
       RXLine = "";
       continue;
+    }else{
+      RXLine += c;
+
     }
   }
 }
@@ -150,6 +164,8 @@ void msgLostTask(){
 
 void setup() {
   Serial.begin(115200);
+  digitalWrite(RGB_BUILTIN, LOW);  
+
   delay(200);
 
   Uart.begin(BAUD, SERIAL_8N1, RXPin, TXPin);
@@ -158,8 +174,9 @@ void setup() {
   Serial.println("SETUP READY");
 
   connectWiFi();
-  digitalWrite(RGB_BUILTIN, HIGH);
   delay(200);
+  digitalWrite(RGB_BUILTIN, HIGH);  
+
 
 
 }
