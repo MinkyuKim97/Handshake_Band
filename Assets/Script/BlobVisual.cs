@@ -1,58 +1,59 @@
+using System;
 using UnityEngine;
 
 public class BlobVisual : MonoBehaviour
 {
-    [Header("Êı¾İÀ´Ô´£¨ÍÏ BlobInput ½øÀ´£©")]
+    [Header("æ•°æ®æºï¼šæŠŠ BlobInput æ‹–åˆ°è¿™é‡Œ")]
     public BlobInput source;
 
-    [Header("°Ñ¹ÒÁË²ÄÖÊµÄ Quad ÍÏ½øÀ´£¨ÍÆ¼ö£©")]
+    [Header("æŠŠæŒ‚äº†æ°´æ»´æè´¨çš„ Quad çš„ Renderer æ‹–è¿›æ¥ï¼ˆæ¨èï¼‰")]
     public Renderer targetRenderer;
 
-    [Header("²»ÍÏ Renderer µÄ»°£¬¾Í°Ñ²ÄÖÊÍÏÕâÀï")]
+    [Header("ä¸ä½¿ç”¨ Renderer çš„è¯ï¼Œå°±æŠŠæè´¨ç›´æ¥æ‹–è¿™é‡Œ")]
     public Material targetMaterial;
 
-    [Header("°ë¾¶¶¯»­Æ½»¬Ê±¼ä£¨Ô½Ğ¡Ô½¿ì£©")]
+    [Header("åŠå¾„å¹³æ»‘æ—¶é—´ï¼ˆè¶Šå°è¶Šå¿«ï¼‰")]
     [Range(0.01f, 1f)]
     public float radiusSmoothTime = 0.12f;
 
-    [Header("×Ô¶¯Îü¸½·¶Î§")]
+    [Header("è‡ªåŠ¨å¸å¼•èŒƒå›´")]
     public float attractRange = 1.1f;
 
-    [Header("×Ô¶¯Îü¸½Ç¿¶È")]
+    [Header("è‡ªåŠ¨å¸å¼•å¼ºåº¦")]
     public float attractStrength = 6.0f;
 
-    [Header("Î»ÖÃ×èÄá£¨Ô½´óÔ½ğ¤³íÔ½²»¶¶£©")]
+    [Header("ä½ç½®é˜»å°¼ï¼ˆè¶Šå¤§è¶Šç¨³ï¼‰")]
     public float positionDamping = 5.0f;
 
-    [Header("½øÈëÇ¿Îü¸½½×¶Î¾àÀë")]
+    [Header("å¼€å§‹æ‹‰è¿‘çš„è·ç¦»ï¼ˆè¿›å…¥æ›´å¼ºæ‹‰æ‰¯ï¼‰")]
     public float mergeStartDistance = 0.35f;
 
-    [Header("¿ªÊ¼¶¯»­ÈÚºÏ¾àÀë£¨ºÜ½üÊ±²Å¿ªÊ¼ÈÚºÏ¹ı³Ì£©")]
+    [Header("å¼€å§‹åˆå¹¶çš„è·ç¦»ï¼ˆå°äºè¿™ä¸ªå°±è¿›å…¥åˆå¹¶æµç¨‹ï¼‰")]
     public float mergeBeginDistance = 0.18f;
 
-    [Header("ÈÚºÏ¶¯»­ËÙ¶È")]
+    [Header("åˆå¹¶æ’å€¼é€Ÿåº¦ï¼ˆä½ç½®/åŠå¾„è¶‹è¿‘é€Ÿåº¦ï¼‰")]
     public float mergeSpeed = 2.8f;
 
-    [Header("±»ÎüÊÕÄÇµÎËõĞ¡ËÙ¶È")]
+    [Header("åˆå¹¶æ—¶ï¼šæºæ°´æ»´ç¼©å°é€Ÿåº¦")]
     public float mergeShrinkSpeed = 4.5f;
 
-    [Header("ÈÚºÏÍê³ÉãĞÖµ£¨Ğ¡ÓÚÕâ¸ö°ë¾¶¾ÍÉ¾µô£©")]
+    [Header("æºæ°´æ»´åŠå¾„å°äºè¿™ä¸ªå°±åˆ æ‰")]
     public float mergeKillRadius = 0.02f;
 
-    [Header("Ç¿Îü¸½¶îÍâ¼ÓËÙ")]
+    [Header("åˆå¹¶æ—¶é¢å¤–æ‹‰åŠ›å¢å¼º")]
     public float mergePullBoost = 10.0f;
 
-    [Header("Á÷¶¯¸Ğ£ºÎ»ÖÃ°Ú¶¯·ù¶È")]
+    [Header("æµåŠ¨æ„Ÿï¼šä½ç½®æŠ–åŠ¨å¹…åº¦")]
     public float flowPosAmplitude = 0.06f;
 
-    [Header("Á÷¶¯¸Ğ£ºÎ»ÖÃ°Ú¶¯ËÙ¶È")]
+    [Header("æµåŠ¨æ„Ÿï¼šä½ç½®æŠ–åŠ¨é€Ÿåº¦")]
     public float flowPosSpeed = 2.2f;
 
-    [Header("Á÷¶¯¸Ğ£º°ë¾¶ºôÎü·ù¶È£¨0.1=¡À10%£©")]
+    [Header("æµåŠ¨æ„Ÿï¼šåŠå¾„å‘¼å¸å¹…åº¦ï¼ˆ0.1 = 10%ï¼‰")]
     [Range(0f, 0.5f)]
     public float flowRadiusAmplitude = 0.10f;
 
-    [Header("Á÷¶¯¸Ğ£º°ë¾¶ºôÎüËÙ¶È")]
+    [Header("æµåŠ¨æ„Ÿï¼šåŠå¾„å‘¼å¸é€Ÿåº¦")]
     public float flowRadiusSpeed = 2.6f;
 
     private const int Max = 64;
@@ -63,44 +64,47 @@ public class BlobVisual : MonoBehaviour
 
     private int _count = 0;
 
-    // ÊÓ¾õ×Ô¼ºµÄ¡°¿ÉÊÓÎ»ÖÃ/ËÙ¶È¡±
-    private Vector3[] _pos = new Vector3[Max];
-    private Vector3[] _vel = new Vector3[Max];
+    // ä»…è§†è§‰å±‚ï¼šä½ç½®ä¸é€Ÿåº¦
+    private UnityEngine.Vector3[] _pos = new UnityEngine.Vector3[Max];
+    private UnityEngine.Vector3[] _vel = new UnityEngine.Vector3[Max];
 
-    // °ë¾¶£ºµ±Ç° / Ä¿±ê / Æ½»¬ËÙ¶È
+    // åŠå¾„ï¼šå½“å‰/ç›®æ ‡/å¹³æ»‘é€Ÿåº¦
     private float[] _radius = new float[Max];
     private float[] _targetRadius = new float[Max];
     private float[] _radiusVel = new float[Max];
 
-    // ÈÚºÏ×´Ì¬£¨src -> dst£©
+    // åˆå¹¶çŠ¶æ€ï¼šsrc -> dst
     private bool[] _isMerging = new bool[Max];
     private int[] _mergeDst = new int[Max];
     private float[] _mergeFinalRadius = new float[Max];
 
-    // Á÷¶¯ÖÖ×Ó
+    // æµåŠ¨å™ªå£°ç§å­
     private float[] _seedA = new float[Max];
     private float[] _seedB = new float[Max];
     private float[] _seedC = new float[Max];
 
-    private Vector4[] _upload = new Vector4[Max];
+    // ä¸Šä¼ åˆ° shader çš„æ•°æ®ï¼šxyz = ä½ç½®ï¼Œw = åŠå¾„
+    private UnityEngine.Vector4[] _upload = new UnityEngine.Vector4[Max];
+
     private bool _ok = false;
 
     private void Start()
     {
-        // ÓÅÏÈ´Ó Renderer »ñÈ¡ÊµÀı²ÄÖÊ£¬±ÜÃâ¸Äµ½¹²Ïí²ÄÖÊ
+        // å¦‚æœæä¾›äº† Rendererï¼Œåˆ™ä» Renderer å–æè´¨ï¼ˆå®ä¾‹æè´¨ï¼‰
         if (targetRenderer != null)
         {
             targetMaterial = targetRenderer.material;
         }
 
+        // æè´¨å¿…é¡»å­˜åœ¨
         if (targetMaterial == null)
         {
-            Debug.LogError("BlobVisual£ºÃ»Ö¸¶¨ targetRenderer »ò targetMaterial¡£");
+            UnityEngine.Debug.LogError("BlobVisual: targetRenderer æˆ– targetMaterial æ²¡æœ‰èµ‹å€¼ã€‚");
             enabled = false;
             return;
         }
 
-        // Ç¿ÖÆ shader Ê¹ÓÃÍâ²¿ blobs£¨ÓÉ½Å±¾Î¹Êı¾İ£©
+        // å‘Šè¯‰ shader ä½¿ç”¨å¤–éƒ¨ä¼ å…¥çš„æ°´æ»´æ•°ç»„
         targetMaterial.SetFloat(UseExternalID, 1f);
         _ok = true;
     }
@@ -110,7 +114,7 @@ public class BlobVisual : MonoBehaviour
         if (!_ok) return;
         if (source == null) return;
 
-        // ´¦ÀíÇå¿Õ
+        // å¤„ç†æ¸…ç©º
         if (source.ConsumeClearFlag())
         {
             _count = 0;
@@ -118,18 +122,18 @@ public class BlobVisual : MonoBehaviour
             return;
         }
 
-        // Ö»ÔÚ¡°ĞÂÔö¡±Ê±£¬´Ó source ÄÃ³öÉúÎ»ÖÃ£»Æ½Ê±²»¸²¸Ç _pos
         int srcCount = Mathf.Clamp(source.Count, 0, Max);
 
+        // æ–°å¢ï¼šåˆå§‹åŒ–æ–°æ°´æ»´çš„è§†è§‰çŠ¶æ€
         if (srcCount > _count)
         {
             for (int i = _count; i < srcCount; i++)
             {
-                Vector3 spawn = source.GetSpawnPos(i);
+                UnityEngine.Vector3 spawn = source.GetSpawnPos(i);
                 float tr = source.GetTargetRadius(i);
 
                 _pos[i] = spawn;
-                _vel[i] = Vector3.zero;
+                _vel[i] = UnityEngine.Vector3.zero;
 
                 _radius[i] = tr;
                 _targetRadius[i] = tr;
@@ -139,25 +143,25 @@ public class BlobVisual : MonoBehaviour
                 _mergeDst[i] = -1;
                 _mergeFinalRadius[i] = 0f;
 
-                _seedA[i] = Random.Range(0f, 1000f);
-                _seedB[i] = Random.Range(0f, 1000f);
-                _seedC[i] = Random.Range(0f, 1000f);
+                _seedA[i] = UnityEngine.Random.Range(0f, 1000f);
+                _seedB[i] = UnityEngine.Random.Range(0f, 1000f);
+                _seedC[i] = UnityEngine.Random.Range(0f, 1000f);
             }
 
             _count = srcCount;
         }
         else if (srcCount < _count)
         {
-            // Ô´¼õÉÙ£¨±ÈÈçÄãÎ´À´ÏëÍâ²¿É¾µã£©£¬ÕâÀïÖ±½Ó½Ø¶Ï
+            // æ•°æ®æºå‡å°‘ï¼šç›´æ¥ç¼©çŸ­ countï¼ˆè¿™é‡Œä¸åšå¤æ‚æ¬è¿ï¼Œä¿æŒç®€å•ï¼‰
             _count = srcCount;
         }
 
-        // Í¬²½Ä¿±ê°ë¾¶ + Ïû·Ñ impulse£¨µ«²»ÖØÖÃÎ»ÖÃ£©
+        // åŒæ­¥ç›®æ ‡åŠå¾„ + åƒæ‰è¾“å…¥å†²é‡ï¼ˆä¾‹å¦‚ç‚¹å‡»ç»™ä¸€ä¸ª impulseï¼‰
         for (int i = 0; i < _count; i++)
         {
             _targetRadius[i] = source.GetTargetRadius(i);
 
-            Vector3 imp = source.ConsumeImpulse(i);
+            UnityEngine.Vector3 imp = source.ConsumeImpulse(i);
             if (imp.sqrMagnitude > 1e-6f)
             {
                 _vel[i] += imp;
@@ -172,13 +176,13 @@ public class BlobVisual : MonoBehaviour
     {
         if (_count <= 0) return;
 
-        // 1) °ë¾¶Æ½»¬
+        // åŠå¾„å¹³æ»‘ï¼šè·Ÿéšæ•°æ®æºçš„ç›®æ ‡åŠå¾„
         for (int i = 0; i < _count; i++)
         {
             _radius[i] = Mathf.SmoothDamp(_radius[i], _targetRadius[i], ref _radiusVel[i], radiusSmoothTime, Mathf.Infinity, dt);
         }
 
-        // 2) Îü¸½ + ´¥·¢ÈÚºÏ
+        // å¸å¼•ä¸è§¦å‘åˆå¹¶ï¼ˆä»…å¯¹æœªåˆå¹¶çš„æ°´æ»´å¯¹è¿›è¡Œåˆ¤æ–­ï¼‰
         for (int i = 0; i < _count; i++)
         {
             if (_isMerging[i]) continue;
@@ -187,16 +191,17 @@ public class BlobVisual : MonoBehaviour
             {
                 if (_isMerging[j]) continue;
 
-                Vector3 d = _pos[j] - _pos[i];
+                UnityEngine.Vector3 d = _pos[j] - _pos[i];
                 float dist = d.magnitude;
                 if (dist < 1e-5f) continue;
 
                 if (dist <= attractRange)
                 {
-                    Vector3 dir = d / dist;
+                    UnityEngine.Vector3 dir = d / dist;
                     float t = 1f - (dist / attractRange);
                     float force = attractStrength * t;
 
+                    // è¶Šæ¥è¿‘ mergeStartDistanceï¼Œé¢å¤–å¢å¼ºæ‹‰åŠ›
                     if (dist <= mergeStartDistance)
                     {
                         force += mergePullBoost * (1f - dist / mergeStartDistance);
@@ -205,6 +210,7 @@ public class BlobVisual : MonoBehaviour
                     _vel[i] += dir * force * dt;
                     _vel[j] -= dir * force * dt;
 
+                    // çœŸæ­£å¼€å§‹åˆå¹¶
                     if (dist <= mergeBeginDistance)
                     {
                         BeginMerge(i, j);
@@ -213,7 +219,7 @@ public class BlobVisual : MonoBehaviour
             }
         }
 
-        // 3) ÈÚºÏ¶¯»­£ºsrc Ìù½ü dst ²¢ËõĞ¡£»dst ±ä´ó
+        // æ‰§è¡Œåˆå¹¶ï¼šsrc å‘ dst é æ‹¢ï¼Œsrc ç¼©å°ï¼Œdst å¢å¤§åˆ°æœ€ç»ˆåŠå¾„
         for (int i = 0; i < _count; i++)
         {
             if (!_isMerging[i]) continue;
@@ -226,13 +232,14 @@ public class BlobVisual : MonoBehaviour
             }
 
             float lerpPos = 1f - Mathf.Exp(-mergeSpeed * dt);
-            _pos[i] = Vector3.Lerp(_pos[i], _pos[dst], lerpPos);
+            _pos[i] = UnityEngine.Vector3.Lerp(_pos[i], _pos[dst], lerpPos);
 
             _targetRadius[i] = Mathf.Max(0f, _targetRadius[i] - mergeShrinkSpeed * dt);
 
             float lerpRad = 1f - Mathf.Exp(-mergeSpeed * dt);
             _targetRadius[dst] = Mathf.Lerp(_targetRadius[dst], _mergeFinalRadius[i], lerpRad);
 
+            // æºæ°´æ»´ç¼©åˆ°é˜ˆå€¼å°±ç§»é™¤
             if (_radius[i] <= mergeKillRadius || _targetRadius[i] <= mergeKillRadius)
             {
                 RemoveVisual(i);
@@ -240,7 +247,7 @@ public class BlobVisual : MonoBehaviour
             }
         }
 
-        // 4) ×èÄá + ¸üĞÂÎ»ÖÃ
+        // ä½ç½®ç§¯åˆ†ï¼ˆå¸¦é˜»å°¼ï¼‰
         float damp = Mathf.Clamp01(1f - positionDamping * dt);
         for (int i = 0; i < _count; i++)
         {
@@ -253,11 +260,11 @@ public class BlobVisual : MonoBehaviour
     {
         if (_isMerging[a] || _isMerging[b]) return;
 
-        // ´óµÄ×ö dst£¬Ğ¡µÄ×ö src
+        // é€‰æ‹©æ›´å¤§çš„ä½œä¸º dstï¼Œæ›´å°çš„ä½œä¸º src
         int dst = (_targetRadius[a] >= _targetRadius[b]) ? a : b;
         int src = (dst == a) ? b : a;
 
-        // Ìå»ıÊØºã£ºr^3 Ïà¼Ó
+        // ç®€å•â€œä½“ç§¯å®ˆæ’â€è¿‘ä¼¼ï¼šä½“ç§¯ ~ r^3
         float rDst = Mathf.Max(0.0001f, _targetRadius[dst]);
         float rSrc = Mathf.Max(0.0001f, _targetRadius[src]);
 
@@ -269,8 +276,8 @@ public class BlobVisual : MonoBehaviour
         _mergeDst[src] = dst;
         _mergeFinalRadius[src] = rFinal;
 
-        // ¸ø dst Ò»µãËÙ¶È£¬¹Û¸Ğ¸üÏñÎü¹ıÈ¥
-        Vector3 dir = (_pos[src] - _pos[dst]);
+        // ç»™ dst ä¸€ç‚¹è½»å¾®é€Ÿåº¦ï¼Œå¢å¼ºâ€œå¸æ”¶â€åŠ¨æ„Ÿ
+        UnityEngine.Vector3 dir = (_pos[src] - _pos[dst]);
         if (dir.sqrMagnitude > 1e-6f)
         {
             _vel[dst] += dir.normalized * 0.6f;
@@ -282,6 +289,7 @@ public class BlobVisual : MonoBehaviour
         int last = _count - 1;
         if (index < 0 || index > last) return;
 
+        // ç”¨æœ€åä¸€ä¸ªè¦†ç›–å½“å‰ï¼Œé¿å…ç§»åŠ¨å¤§é‡æ•°ç»„ï¼ˆO(1) åˆ é™¤ï¼‰
         if (index != last)
         {
             _pos[index] = _pos[last];
@@ -299,7 +307,7 @@ public class BlobVisual : MonoBehaviour
             _seedB[index] = _seedB[last];
             _seedC[index] = _seedC[last];
 
-            // ĞŞÕı mergeDst Ö¸Õë
+            // ä¿®æ­£ï¼šå¦‚æœæœ‰äººæ­£åœ¨åˆå¹¶åˆ° lastï¼Œdst æŒ‡é’ˆè¦æ”¹æˆ index
             for (int i = 0; i < _count; i++)
             {
                 if (_isMerging[i] && _mergeDst[i] == last)
@@ -321,15 +329,17 @@ public class BlobVisual : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
+            // ä½ç½®å¾®æŠ–åŠ¨ï¼ˆå¢å¼ºâ€œæµåŠ¨â€æ„Ÿï¼‰
             float ox = Mathf.Sin(t * flowPosSpeed + _seedA[i]);
             float oy = Mathf.Sin(t * (flowPosSpeed * 1.17f) + _seedB[i]);
-            Vector3 flowOffset = new Vector3(ox, oy, 0f) * flowPosAmplitude;
+            UnityEngine.Vector3 flowOffset = new UnityEngine.Vector3(ox, oy, 0f) * flowPosAmplitude;
 
+            // åŠå¾„å‘¼å¸ï¼ˆå¢å¼ºâ€œæ°´æ„Ÿâ€ï¼‰
             float breath = 1f + flowRadiusAmplitude * Mathf.Sin(t * flowRadiusSpeed + _seedC[i]);
             float r = Mathf.Max(0.0001f, _radius[i] * breath);
 
-            Vector3 p = _pos[i] + flowOffset;
-            _upload[i] = new Vector4(p.x, p.y, p.z, r);
+            UnityEngine.Vector3 p = _pos[i] + flowOffset;
+            _upload[i] = new UnityEngine.Vector4(p.x, p.y, p.z, r);
         }
 
         targetMaterial.SetVectorArray(BlobsID, _upload);

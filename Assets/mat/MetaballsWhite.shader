@@ -4,7 +4,7 @@ Shader "Unlit/MetaballsWhite"
     {
         _UseExternal ("Use External (0 Demo / 1 External)", Float) = 1
 
-        // 新增：外部贴图（脚本下载后塞进来）
+      
         _ExternalTex ("External Texture", 2D) = "white" {}
 
         _Threshold ("Threshold", Float) = 0.12
@@ -73,7 +73,7 @@ Shader "Unlit/MetaballsWhite"
             int _BlobCount;
             float4 _Blobs[MAX_BLOBS];
 
-            // 原本用相机抓取背景，这里改成用外部贴图
+          
             TEXTURE2D(_ExternalTex);
             SAMPLER(sampler_ExternalTex);
 
@@ -210,7 +210,7 @@ Shader "Unlit/MetaballsWhite"
                         float shellAlpha = smoothstep(0.06, 0.92, shellRaw);
                         shellAlpha = pow(shellAlpha, 0.90);
 
-                        // 折射：改为采样外部贴图 _ExternalTex
+                       
                       
                         float refrStrength = 0.050;
                         float2 refrUV = q + nor.xy * refrStrength * shellSoft;
@@ -230,7 +230,7 @@ Shader "Unlit/MetaballsWhite"
                         float spec1 = pow(saturate(dot(nor, H)), tightPow1) * (_Specular * 3.2);
                         float spec2 = pow(saturate(dot(nor, H)), tightPow2) * (_Specular * 1.6);
 
-                        // 假“屏幕反射”：同样改为采样外部贴图
+                       
                         float3 R = reflect(-V, nor);
                         float2 reflUV = q + R.xy * (0.030 * shellSoft);
                         float3 bgRefl = SAMPLE_TEXTURE2D(_ExternalTex, sampler_ExternalTex, reflUV).rgb;

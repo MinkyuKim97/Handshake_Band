@@ -2,3 +2,16 @@ secrets.h
 .DS_Store
 
 ``
+# --- Unity generated (force ignore) ---
+Library/
+Library/**
+Library/PackageCache/
+Library/PackageCache/**
+Temp/
+Temp/**
+Obj/
+Obj/**
+Logs/
+Logs/**
+UserSettings/
+UserSettings/**

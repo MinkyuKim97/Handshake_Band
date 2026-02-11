@@ -206,7 +206,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1, y: 1, z: -1879}
+  m_LocalPosition: {x: -86, y: 99.2, z: -955}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -433,72 +433,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1559361085}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &715228061
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 715228063}
-  - component: {fileID: 715228062}
-  m_Layer: 0
-  m_Name: BlobPainter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &715228062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 715228061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1a668906f4064c4ea41e18057e243d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlobPainter
-  targetRenderer: {fileID: 0}
-  targetMaterial: {fileID: 2100000, guid: 3bed347901e2332418fe3c3c27b1a7a3, type: 2}
-  maxBlobs: 64
-  spread: 1.5
-  baseRadius: 0.602
-  clickFeedDistance: 0.45
-  clickRadiusIncrement: 0.1
-  radiusSmoothTime: 0.12
-  attractRange: 2.09
-  attractStrength: 6
-  positionDamping: 5
-  mergeStartDistance: 0.35
-  mergeBeginDistance: 0.18
-  mergeSpeed: 2.8
-  mergeShrinkSpeed: 4.5
-  mergeKillRadius: 0.02
-  mergePullBoost: 10
-  flowPosAmplitude: 0.03
-  flowPosSpeed: 1.72
-  flowRadiusAmplitude: 0.089
-  flowRadiusSpeed: 2.25
-  rightClickClear: 1
---- !u!4 &715228063
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 715228061}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -26.72147, y: 24.8957, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,10 +608,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FetchImage
   targetRenderer: {fileID: 1335986973}
-  imageUrl: 
+  imageUrl: https://i.pinimg.com/1200x/af/91/1b/af911b8119ee0cc0d44c031be361a802.jpg
   streamingFileName: test1.png
   textureProperty: _ExternalTex
-  forceShowAsUnlitTexture: 0
+  forceShowAsUnlitTexture: 1
 --- !u!1 &1420514427
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,8 +711,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 330585546}
+  - {fileID: 1335986975}
   - {fileID: 410087041}
   - {fileID: 832575519}
-  - {fileID: 1335986975}
-  - {fileID: 715228063}
   - {fileID: 1559361085}

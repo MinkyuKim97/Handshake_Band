@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,17 +8,17 @@ public class BlobInput : MonoBehaviour
     [Range(1, 64)]
     public int maxBlobs = 64;
 
-    [Header("clikc area")]
+    [Header("click area")]
     public float spread = 1.5f;
 
     [Header("new droplet radius")]
     [Range(0.01f, 2f)]
     public float baseRadius = 0.22f;
 
-    [Header("点击靠近已有水滴给最近那滴加量 不是新建")]
+    [Header("If click is close to an existing droplet: feed the nearest one (no new droplet)")]
     public float clickFeedDistance = 0.45f;
 
-    [Header("每次点击加多少量")]
+    [Header("Radius increase per click (added to target radius)")]
     public float clickRadiusIncrement = 0.10f;
 
     [Header("right click to clear all the droplet")]
@@ -27,43 +28,39 @@ public class BlobInput : MonoBehaviour
 
     private int _count = 0;
 
-    // 只存“出生位置”（visual 里只在新增时读取一次）
-    private Vector3[] _spawnPos = new Vector3[Max];
+    // Only stores "initial spawn position" (visual reads it once when created)
+    private UnityEngine.Vector3[] _spawnPos = new UnityEngine.Vector3[Max];
 
-    // 目标半径（visual 每帧读取，用于 SmoothDamp/融合等）
+    // Target radius (visual reads every frame for SmoothDamp / merge, etc.)
     private float[] _targetRadius = new float[Max];
 
-    private Vector3[] _impulse = new Vector3[Max];
+    private UnityEngine.Vector3[] _impulse = new UnityEngine.Vector3[Max];
 
-    // 清空标记：visual ConsumeClearFlag() 后清掉
+    // Clear flag (visual calls ConsumeClearFlag() to reset)
     private bool _clearFlag = false;
 
     public int Count => _count;
 
-   
-    public Vector3 GetSpawnPos(int i)
+    public UnityEngine.Vector3 GetSpawnPos(int i)
     {
-        if (i < 0 || i >= _count) return Vector3.zero;
+        if (i < 0 || i >= _count) return UnityEngine.Vector3.zero;
         return _spawnPos[i];
     }
 
-    // visual：每帧拿目标半径
     public float GetTargetRadius(int i)
     {
         if (i < 0 || i >= _count) return 0f;
         return _targetRadius[i];
     }
 
-   
-    public Vector3 ConsumeImpulse(int i)
+    public UnityEngine.Vector3 ConsumeImpulse(int i)
     {
-        if (i < 0 || i >= _count) return Vector3.zero;
-        Vector3 v = _impulse[i];
-        _impulse[i] = Vector3.zero;
+        if (i < 0 || i >= _count) return UnityEngine.Vector3.zero;
+        UnityEngine.Vector3 v = _impulse[i];
+        _impulse[i] = UnityEngine.Vector3.zero;
         return v;
     }
 
-   
     public bool ConsumeClearFlag()
     {
         if (!_clearFlag) return false;
@@ -78,8 +75,8 @@ public class BlobInput : MonoBehaviour
 
         if (mouse.leftButton.wasPressedThisFrame)
         {
-            Vector2 sp = mouse.position.ReadValue();
-            Vector3 p = ScreenToPoint(sp);
+            UnityEngine.Vector2 sp = mouse.position.ReadValue();
+            UnityEngine.Vector3 p = ScreenToPoint(sp);
             ClickAddOrFeed(p);
         }
 
@@ -89,8 +86,8 @@ public class BlobInput : MonoBehaviour
         }
     }
 
-    // 屏幕坐标 -> 数据坐标
-    private Vector3 ScreenToPoint(Vector2 screenPos)
+    // Screen space -> simulation space
+    private UnityEngine.Vector3 ScreenToPoint(UnityEngine.Vector2 screenPos)
     {
         float u = Mathf.Clamp01(screenPos.x / Screen.width);
         float v = Mathf.Clamp01(screenPos.y / Screen.height);
@@ -100,11 +97,11 @@ public class BlobInput : MonoBehaviour
         float x = (u * 2f - 1f) * spread * aspect;
         float y = (v * 2f - 1f) * spread;
 
-        return new Vector3(x, y, 0f);
+        return new UnityEngine.Vector3(x, y, 0f);
     }
 
-    // 点击：靠近就给最近那滴，否则新建
-    private void ClickAddOrFeed(Vector3 clickPos)
+    // Add a new droplet, or feed the nearest one if close enough
+    private void ClickAddOrFeed(UnityEngine.Vector3 clickPos)
     {
         int limit = Mathf.Min(maxBlobs, Max);
 
@@ -115,7 +112,7 @@ public class BlobInput : MonoBehaviour
 
             for (int i = 0; i < _count; i++)
             {
-                float d = Vector3.Distance(_spawnPos[i], clickPos);
+                float d = UnityEngine.Vector3.Distance(_spawnPos[i], clickPos);
                 if (d < best)
                 {
                     best = d;
@@ -127,8 +124,7 @@ public class BlobInput : MonoBehaviour
             {
                 _targetRadius[nearest] += clickRadiusIncrement;
 
-                
-                Vector3 dir = clickPos - _spawnPos[nearest];
+                UnityEngine.Vector3 dir = clickPos - _spawnPos[nearest];
                 if (dir.sqrMagnitude > 1e-6f)
                 {
                     _impulse[nearest] += dir.normalized * 0.8f;
@@ -137,10 +133,10 @@ public class BlobInput : MonoBehaviour
             }
         }
 
-        // 新建
+        // Create new droplet
         if (_count >= limit)
         {
-            // 满了就覆盖最后一个
+            // If full, overwrite the last one
             int idx = limit - 1;
             InitBlob(idx, clickPos, baseRadius);
             return;
@@ -150,11 +146,11 @@ public class BlobInput : MonoBehaviour
         _count++;
     }
 
-    private void InitBlob(int i, Vector3 pos, float r)
+    private void InitBlob(int i, UnityEngine.Vector3 pos, float r)
     {
         _spawnPos[i] = pos;
         _targetRadius[i] = r;
-        _impulse[i] = Vector3.zero;
+        _impulse[i] = UnityEngine.Vector3.zero;
     }
 
     private void ClearAll()
